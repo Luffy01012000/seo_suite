@@ -70,10 +70,13 @@ export default function ContentGenerationPage() {
                 formData.append('image_urls', imageUrl.trim());
             }
 
-            const response = await fetch('http://localhost:8000/generate-content', {
-                method: 'POST',
-                body: formData,
-            });
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/generate-content`,
+                {
+                    method: 'POST',
+                    body: formData,
+                }
+            );
 
             if (!response.ok) {
                 throw new Error('Failed to generate content. Please try again.');
