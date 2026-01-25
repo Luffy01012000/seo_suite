@@ -38,7 +38,7 @@ const services: ServiceCardProps[] = [
     icon: <Search className="w-8 h-8 text-blue-400" />,
     title: "Smart Keyword Research",
     description: "Uncover high-potential keywords with our intelligent algorithms, identifying opportunities your competitors miss.",
-    comingSoon: true
+    href: "/keyword-research"
   },
   {
     icon: <PenTool className="w-8 h-8 text-orange-400" />,
