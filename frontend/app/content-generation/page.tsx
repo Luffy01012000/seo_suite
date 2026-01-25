@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { Upload, Sparkles, AlertCircle, CheckCircle, Link as LinkIcon, Image as ImageIcon, Check, Copy, X, Globe, Package, ListChecks, Lightbulb } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { API_BASE_URL } from '@/lib/api/keywords';
 
 interface GeneratedContent {
     product_description?: string;
@@ -65,7 +66,7 @@ export default function ContentGenerationPage() {
             let endpoint = '';
 
             if (mode === 'product') {
-                endpoint = 'http://localhost:8000/generate-product-content';
+                endpoint = `${API_BASE_URL}/generate-product-content`;
                 formData.append('prompt', prompt);
                 if (image) formData.append('images', image);
                 if (imageUrl.trim()) formData.append('image_urls', imageUrl.trim());
@@ -74,7 +75,7 @@ export default function ContentGenerationPage() {
                     throw new Error('Please provide at least one product image.');
                 }
             } else {
-                endpoint = 'http://localhost:8000/generate-website-content';
+                endpoint = `${API_BASE_URL}/generate-website-content`;
                 formData.append('url', targetUrl);
                 if (prompt) formData.append('prompt', prompt);
 
