@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     # Keyword Suggestion APIs (choose one or use fallbacks)
     dataforseo_login: Optional[str] = None
     dataforseo_password: Optional[str] = None
+    serper_api_key: Optional[str] = None
     
     # Google Ads API (for volume & competition data)
     google_ads_developer_token: Optional[str] = None
@@ -58,6 +59,10 @@ class Settings(BaseSettings):
     def has_dataforseo(self) -> bool:
         """Check if DataForSEO is configured"""
         return bool(self.dataforseo_login and self.dataforseo_password)
+
+    def has_serper(self) -> bool:
+        """Check if Serper.dev is configured"""
+        return bool(self.serper_api_key)
 
 
 # Global settings instance

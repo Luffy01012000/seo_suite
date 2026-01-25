@@ -69,7 +69,11 @@ class SERPAnalysisService:
             return cached
         
         # Determine which SERP API to use
-        if settings.serpapi_key:
+        if settings.serper_api_key:
+            result = await self._analyze_with_serper(
+                keyword, language, country, device, num_results
+            )
+        elif settings.serpapi_key:
             result = await self._analyze_with_serpapi(
                 keyword, language, country, device, num_results
             )
@@ -87,6 +91,124 @@ class SERPAnalysisService:
         
         return result
     
+    async def _analyze_with_serper(
+        self,
+        keyword: str,
+        language: str,
+        country: str,
+        device: str,
+        num_results: int
+    ) -> SERPAnalysisResponse:
+        """Fetch SERP data from Serper.dev"""
+        if not self.session:
+            raise RuntimeError("Session not initialized")
+        
+        url = "https://google.serper.dev/search"
+        headers = {
+            "X-API-KEY": settings.serper_api_key,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "q": keyword,
+            "gl": country,
+            "hl": language,
+            "num": num_results
+        }
+        
+        try:
+            async with self.session.post(url, headers=headers, json=payload) as response:
+                if response.status == 403:
+                    raise APIKeyMissingError("Invalid Serper.dev API key")
+                elif response.status != 200:
+                    raise APIRequestError(f"Serper.dev error: {response.status}")
+                
+                data = await response.json()
+                return self._parse_serper_results(keyword, data)
+                
+        except aiohttp.ClientError as e:
+            raise APIRequestError(f"Network error: {e}")
+
+    def _parse_serper_results(self, keyword: str, data: Dict[str, Any]) -> SERPAnalysisResponse:
+        """Parse Serper.dev response into our schema"""
+        organic_results = []
+        features = []
+        people_also_ask = []
+        related_searches = []
+        
+        # Parse organic results
+        if "organic" in data:
+            for idx, result in enumerate(data["organic"]):
+                try:
+                    organic_results.append(
+                        OrganicResult(
+                            position=result.get("position", idx + 1),
+                            title=result.get("title", ""),
+                            url=result.get("link", ""),
+                            displayed_url=result.get("link", ""),
+                            snippet=result.get("snippet", ""),
+                            domain=self._extract_domain(result.get("link", "")),
+                            rich_snippet=result.get("attributes"),
+                            sitelinks=result.get("sitelinks")
+                        )
+                    )
+                except Exception as e:
+                    logger.warning(f"Error parsing Serper organic result: {e}")
+        
+        # Parse featured snippet (answer box)
+        if "answerBox" in data:
+            box = data["answerBox"]
+            features.append(
+                SERPFeature(
+                    feature_type=SERPFeatureType.FEATURED_SNIPPET,
+                    title=box.get("title"),
+                    snippet=box.get("snippet") or box.get("answer"),
+                    source_url=box.get("link"),
+                    source_domain=self._extract_domain(box.get("link", ""))
+                )
+            )
+        
+        # Parse People Also Ask
+        if "peopleAlsoAsk" in data:
+            for item in data["peopleAlsoAsk"]:
+                people_also_ask.append(
+                    PeopleAlsoAsk(
+                        question=item.get("question", ""),
+                        answer=item.get("snippet"),
+                        source_url=item.get("link"),
+                        source_domain=self._extract_domain(item.get("link", ""))
+                    )
+                )
+        
+        # Parse related searches
+        if "relatedQueries" in data:
+            for item in data["relatedQueries"]:
+                related_searches.append(
+                    RelatedSearch(
+                        keyword=item.get("query", "")
+                    )
+                )
+        
+        # Parse Knowledge Graph
+        if "knowledgeGraph" in data:
+            kg = data["knowledgeGraph"]
+            features.append(
+                SERPFeature(
+                    feature_type=SERPFeatureType.KNOWLEDGE_PANEL,
+                    title=kg.get("title"),
+                    data=kg
+                )
+            )
+        
+        return SERPAnalysisResponse(
+            keyword=keyword,
+            total_results=data.get("searchParameters", {}).get("total_results", 0),
+            organic_results=organic_results,
+            features=features,
+            people_also_ask=people_also_ask,
+            related_searches=related_searches,
+            serp_api_used="serper"
+        )
+
     async def _analyze_with_serpapi(
         self,
         keyword: str,

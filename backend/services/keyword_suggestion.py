@@ -71,6 +71,15 @@ class KeywordSuggestionService:
             except Exception as e:
                 logger.error(f"DataForSEO API error: {e}")
         
+        # Try Serper.dev if no suggestions yet and it's configured
+        if not suggestions and settings.has_serper():
+            try:
+                suggestions = await self._get_serper_suggestions(
+                    seed_keyword, limit
+                )
+            except Exception as e:
+                logger.error(f"Serper.dev API error: {e}")
+        
         # Fallback to free alternatives if needed
         if not suggestions:
             suggestions = await self._get_fallback_suggestions(seed_keyword, limit)
@@ -130,40 +139,56 @@ class KeywordSuggestionService:
         limit: int
     ) -> List[KeywordSuggestion]:
         """
-        Fallback method using Google autocomplete suggestions (free).
-        This is a simple alternative when no API keys are configured.
+        Fallback method using free autocomplete suggestions (Google and DuckDuckGo).
+        This provides a good variety of keywords without requiring API keys.
         """
-        suggestions = []
+        suggestions_map = {} # Use dict to avoid duplicates
         
-        # Use Google autocomplete API (free, no key required)
-        url = "http://suggestqueries.google.com/complete/search"
-        params = {
-            "client": "firefox",
-            "q": seed_keyword
-        }
-        
+        # 1. Try Google Autocomplete
         try:
+            google_url = "http://suggestqueries.google.com/complete/search"
+            params = {"client": "firefox", "q": seed_keyword}
+            
             if not self.session:
                 raise RuntimeError("Session not initialized")
                 
-            async with self.session.get(url, params=params) as response:
+            async with self.session.get(google_url, params=params) as response:
                 if response.status == 200:
                     data = await response.json()
-                    # Google autocomplete returns [query, [suggestions]]
                     if len(data) > 1 and isinstance(data[1], list):
-                        for suggestion_text in data[1][:limit]:
-                            suggestions.append(
-                                KeywordSuggestion(
-                                    keyword=suggestion_text,
-                                    source="google_autocomplete"
+                        for text in data[1]:
+                            if text not in suggestions_map:
+                                suggestions_map[text] = KeywordSuggestion(
+                                    keyword=text, source="google_autocomplete"
                                 )
+        except Exception as e:
+            logger.warning(f"Google fallback failed: {e}")
+            
+        # 2. Try DuckDuckGo Autocomplete (another great free source)
+        try:
+            ddg_url = "https://duckduckgo.com/ac/"
+            params = {"q": seed_keyword}
+            
+            async with self.session.get(ddg_url, params=params) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    # DDG returns list of dicts: [{"phrase": "keyword"}, ...]
+                    for item in data:
+                        text = item.get("phrase")
+                        if text and text not in suggestions_map:
+                            suggestions_map[text] = KeywordSuggestion(
+                                keyword=text, source="duckduckgo_autocomplete"
                             )
         except Exception as e:
-            logger.warning(f"Fallback autocomplete failed: {e}")
+            logger.warning(f"DuckDuckGo fallback failed: {e}")
         
-        # If autocomplete fails or returns few results, generate variations
-        if len(suggestions) < 5:
-            variations = self._generate_keyword_variations(seed_keyword, limit)
+        suggestions = list(suggestions_map.values())
+        
+        # If still short on results, generate simple variations
+        if len(suggestions) < 10:
+            variations = self._generate_keyword_variations(
+                seed_keyword, max(0, limit - len(suggestions))
+            )
             suggestions.extend(variations)
         
         return suggestions[:limit]
@@ -204,6 +229,71 @@ class KeywordSuggestionService:
         
         return variations[:limit]
     
+    async def _get_serper_suggestions(
+        self,
+        seed_keyword: str,
+        limit: int
+    ) -> List[KeywordSuggestion]:
+        """
+        Fetch keyword suggestions from Serper.dev API.
+        Uses the 'Search' endpoint specifically for related queries.
+        """
+        if not self.session:
+            raise RuntimeError("Session not initialized")
+            
+        url = "https://google.serper.dev/search"
+        headers = {
+            "X-API-KEY": settings.serper_api_key,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "q": seed_keyword,
+            "gl": "us", # default to US
+            "hl": "en"
+        }
+        
+        try:
+            async with self.session.post(url, headers=headers, json=payload) as response:
+                if response.status == 403:
+                    raise APIKeyMissingError("Invalid Serper.dev API key")
+                elif response.status != 200:
+                    raise APIRequestError(f"Serper.dev API error: {response.status}")
+                
+                data = await response.json()
+                return self._parse_serper_response(data, limit)
+        except aiohttp.ClientError as e:
+            raise APIRequestError(f"Serper.dev network error: {e}")
+
+    def _parse_serper_response(self, data: Dict[str, Any], limit: int) -> List[KeywordSuggestion]:
+        """Parse Serper.dev response (relatedQueries and peopleAlsoAsk)"""
+        suggestions = []
+        
+        # 1. Get related queries
+        related = data.get("relatedQueries", [])
+        for item in related:
+            query = item.get("query")
+            if query:
+                suggestions.append(
+                    KeywordSuggestion(
+                        keyword=query,
+                        source="serper_related"
+                    )
+                )
+        
+        # 2. Get People Also Ask
+        paa = data.get("peopleAlsoAsk", [])
+        for item in paa:
+            question = item.get("question")
+            if question:
+                suggestions.append(
+                    KeywordSuggestion(
+                        keyword=question,
+                        source="serper_paa"
+                    )
+                )
+        
+        return suggestions[:limit]
+
     def _parse_dataforseo_response(self, data: Dict[str, Any]) -> List[KeywordSuggestion]:
         """Parse DataForSEO API response into KeywordSuggestion objects"""
         suggestions = []
