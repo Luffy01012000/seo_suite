@@ -154,7 +154,8 @@ class KeywordSuggestionService:
                 
             async with self.session.get(google_url, params=params) as response:
                 if response.status == 200:
-                    data = await response.json()
+                    # Use content_type=None to skip MIME type validation (handles text/javascript etc)
+                    data = await response.json(content_type=None)
                     if len(data) > 1 and isinstance(data[1], list):
                         for text in data[1]:
                             if text not in suggestions_map:
@@ -171,7 +172,7 @@ class KeywordSuggestionService:
             
             async with self.session.get(ddg_url, params=params) as response:
                 if response.status == 200:
-                    data = await response.json()
+                    data = await response.json(content_type=None)
                     # DDG returns list of dicts: [{"phrase": "keyword"}, ...]
                     for item in data:
                         text = item.get("phrase")
@@ -203,17 +204,19 @@ class KeywordSuggestionService:
         This is a last-resort fallback.
         """
         modifiers = [
-            "best", "top", "how to", "what is", "guide", "tutorial",
-            "free", "online", "near me", "cheap", "review", "vs"
+            "best", "top", "guide", "tutorial", "free", "online", 
+            "near me", "cheap", "review", "vs", "tips", "strategy",
+            "tools", "software", "services", "comparison"
         ]
         
         variations = []
         for modifier in modifiers[:limit]:
+            # Generate prefix variation
             variation = f"{modifier} {seed_keyword}"
             variations.append(
                 KeywordSuggestion(
-                    keyword=variation,
-                    source="generated"
+                    keyword=variation.strip(),
+                    source="generated_prefix"
                 )
             )
             
@@ -265,10 +268,10 @@ class KeywordSuggestionService:
             raise APIRequestError(f"Serper.dev network error: {e}")
 
     def _parse_serper_response(self, data: Dict[str, Any], limit: int) -> List[KeywordSuggestion]:
-        """Parse Serper.dev response (relatedQueries and peopleAlsoAsk)"""
+        """Parse Serper.dev response (relatedQueries prioritized over peopleAlsoAsk)"""
         suggestions = []
         
-        # 1. Get related queries
+        # 1. Get related queries (Primary source for keywords)
         related = data.get("relatedQueries", [])
         for item in related:
             query = item.get("query")
@@ -280,17 +283,22 @@ class KeywordSuggestionService:
                     )
                 )
         
-        # 2. Get People Also Ask
-        paa = data.get("peopleAlsoAsk", [])
-        for item in paa:
-            question = item.get("question")
-            if question:
-                suggestions.append(
-                    KeywordSuggestion(
-                        keyword=question,
-                        source="serper_paa"
+        # 2. Get People Also Ask (Only if we have room, these are questions)
+        # We limit questions to avoid overwhelming the keyword list
+        if len(suggestions) < limit:
+            paa = data.get("peopleAlsoAsk", [])
+            for item in paa:
+                if len(suggestions) >= limit: break
+                question = item.get("question")
+                if question:
+                    # Simple heuristic: if it has more than 5 words and a question mark, 
+                    # it might be a question that's too long for a 'keyword'
+                    suggestions.append(
+                        KeywordSuggestion(
+                            keyword=question,
+                            source="serper_paa"
+                        )
                     )
-                )
         
         return suggestions[:limit]
 
