@@ -20,6 +20,7 @@ interface GeneratedContent {
 interface PlagiarismResult {
     is_unique: boolean;
     plagiarism_score: number;
+    originality_score: number;
     sources_found: number;
 }
 
@@ -420,13 +421,13 @@ export default function ContentGenerationPage() {
                                                     <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Uniqueness Verified</span>
                                                 </div>
                                                 <span className="px-2 py-0.5 bg-emerald-500/20 rounded text-[10px] font-bold text-emerald-400">
-                                                    {plagiarism.plagiarism_score}% ORIGINAL
+                                                    {(plagiarism.originality_score || 0).toFixed(0)}% ORIGINAL
                                                 </span>
                                             </div>
                                             <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
                                                 <div
                                                     className="bg-emerald-500 h-full rounded-full transition-all duration-1000"
-                                                    style={{ width: `${100 - plagiarism.plagiarism_score}%` }}
+                                                    style={{ width: `${plagiarism.originality_score || 0}%` }}
                                                 />
                                             </div>
                                         </div>

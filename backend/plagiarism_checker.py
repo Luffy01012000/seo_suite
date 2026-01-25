@@ -5,6 +5,7 @@ def plagiarism_check(text: str, references: list = []):
     if not references:
         return {
             "plagiarism_percent": 0,
+            "originality_percent": 100,
             "verdict": "No references available – assumed original"
         }
 
@@ -25,5 +26,6 @@ def plagiarism_check(text: str, references: list = []):
 
     return {
         "plagiarism_percent": percent,
+        "originality_percent": round(100 - percent, 2),
         "verdict": verdict
     }

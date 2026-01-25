@@ -115,6 +115,7 @@ async def generate_product_content(
     plagiarism = {
         "is_unique": plagiarism_result["plagiarism_percent"] < 30,
         "plagiarism_score": plagiarism_result["plagiarism_percent"],
+        "originality_score": plagiarism_result["originality_percent"],
         "sources_found": 0
     }
 
@@ -155,6 +156,7 @@ async def generate_website_content(
     plagiarism = {
         "is_unique": plagiarism_result["plagiarism_percent"] < 30,
         "plagiarism_score": plagiarism_result["plagiarism_percent"],
+        "originality_score": plagiarism_result["originality_percent"],
         "sources_found": 0
     }
 
