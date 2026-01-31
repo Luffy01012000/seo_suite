@@ -8,7 +8,12 @@ async def capture_screenshot(url: str) -> Image.Image:
     Captures a screenshot of a website and returns it as a PIL Image.
     """
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
+        browser = await p.chromium.launch(headless=True,
+    args=[
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage"
+    ])
         # Set a standard desktop viewport
         page = await browser.new_page(viewport={"width": 1280, "height": 800})
         
