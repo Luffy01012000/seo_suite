@@ -15,8 +15,8 @@ export function getPublicSupabaseEnv() {
   }
 
   return {
-    url,
-    publishableKey,
+    url: url!,
+    publishableKey: publishableKey!,
   };
 }
 
@@ -29,5 +29,5 @@ export function getServiceRoleKey() {
     );
   }
 
-  return key;
+  return key!;
 }
