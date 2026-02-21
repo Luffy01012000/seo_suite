@@ -7,8 +7,8 @@ import { useState, useEffect } from 'react';
 // In a real application, this would likely be defined elsewhere or passed as props.
 const navLinks = [
     { name: 'Features', href: '#features' },
-    { name: 'How it Works', href: '#how-it-works' },
-    { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Admin', href: '/admin' },
 ];
 
 import { usePathname } from 'next/navigation';
@@ -61,10 +61,10 @@ export function Navbar() {
                             ))}
                         </div>
                         <Link
-                            href="#contact"
+                            href="/content-generation"
                             className="relative bg-gradient-to-r from-orange-500 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-orange-500/20 hover:shadow-blue-500/40"
                         >
-                            Contact Us
+                            Try Content Gen
                         </Link>
                     </div>
 

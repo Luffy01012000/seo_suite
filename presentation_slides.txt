@@ -1,0 +1,73 @@
+SLIDE 1: Requirement Specifications
+-----------------------------------------
+2.4.1 Functional Requirements (User Stories)
+- As a user, I can research keywords to see volume, competition, and CPC data.
+- As a user, I can generate SEO-optimized content from product images or descriptions.
+- As a user, I can audit a website URL to see technical SEO summaries and a visual screenshot.
+- As a user, I can verify the uniqueness of content with a built-in plagiarism checker.
+- As a user, I can view keyword clusters and strategic AI-generated content recommendations.
+
+SLIDE 2: Non-Functional Requirements
+-----------------------------------------
+2.4.2 Non-Functional Requirements
+- Performance: High-speed asynchronous requests using FastAPI and aiohttp.
+- Security: Secure credential management using environment variables.
+- Scalability: Decoupled frontend/backend architecture for independent scaling.
+- Availability: Multiple fallback data sources (Google/DuckDuckGo) for high reliability.
+
+SLIDE 3: System Architecture
+-----------------------------------------
+3. TECHNOLOGY STACK & ARCHITECTURE
+3.1 System Architecture Diagram
+- Client: Next.js (React) handles user interactions.
+- Server: FastAPI (Python) manages logic and external API orchestration.
+- AI: LangChain + Google Gemini for intelligent analysis.
+- External APIs: Serper.dev, DataForSEO, Google Gemini.
+
+SLIDE 4: Technology Stack (Frontend)
+-----------------------------------------
+3.2.1 Frontend
+- Framework: Next.js 14+ (App Router)
+- Language: TypeScript / JavaScript
+- Styling: Tailwind CSS (Modern Dark UI)
+- Icons: Lucide React
+- Package Manager: Bun
+
+SLIDE 5: Technology Stack (Backend)
+-----------------------------------------
+3.2.2 Backend
+- Language: Python 3.10+
+- Framework: FastAPI (Asynchronous)
+- AI Logic: LangChain
+- Scrapping: Playwright (Screenshots) & BeautifulSoup4 (HTML Parsing)
+- Data Typing: Pydantic v2
+
+SLIDE 6: Technology Stack (Tools)
+-----------------------------------------
+3.2.4 Tools
+- Editor: Visual Studio Code
+- Version Control: GitHub
+- Testing: Postman & FastAPI Swagger UI (/docs)
+- Package Manager: Pip / Venv
+
+SLIDE 7: Justification of Technology
+-----------------------------------------
+3.3 Justification
+- Why FastAPI? Native async support for parallel API calls, extremely fast compared to Flask/Django.
+- Why Next.js? industry-leading React framework with excellent SSR/SEO capabilities and fast refresh.
+- Why Gemini? Large context window and multimodal capabilities (handling images) at a lower cost than GPT-4.
+- Why Playwright? Browser automation allows auditing modern JS-heavy React/Next sites accurately.
+
+SLIDE 8: System Design (UML)
+-----------------------------------------
+4.1 UML Diagrams
+- Use Case Diagram: Shows User interacting with Content Gen, Keyword Research, and Audit systems.
+- Activity Diagram: Maps the step-by-step logic from User Input to Final SEO Report.
+- Sequence Diagram: Illustrates the horizontal flow from Frontend -> Backend -> Gemini AI -> Response.
+
+SLIDE 9: Database & ER Diagram
+-----------------------------------------
+4.2 Database Design
+- 4.2.1 E-R Diagram: Defines relationships between Users, Analysis reports, Keywords, and Screenshots.
+- 4.2.2 Schema Design: Uses Pydantic Models as a Type-Safe schema for all API data structures.
+- Persistence Layer: Designed for Redis (caching) and PostgreSQL (long-term storage).

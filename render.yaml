@@ -1,0 +1,30 @@
+services:
+  # FastAPI Backend
+  - type: web
+    name: seo-suite-api
+    env: python
+    rootDir: backend
+    buildCommand: |
+      pip install -r requirements.txt
+      python -m playwright install --with-deps
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    runtime: python-3.12.3
+
+  # Next.js Frontend — deployed as a Node.js Web Service
+  # (NOT a static site) so that proxy.ts auth middleware and
+  # Supabase Server Components work correctly.
+  - type: web
+    name: seo-suite-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: bun install && bun run build
+    startCommand: bun run start
+    envVars:
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
