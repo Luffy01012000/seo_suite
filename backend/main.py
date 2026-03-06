@@ -1,26 +1,23 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from typing import List, Optional
 import logging
+from typing import List, Optional
+
+from config import settings
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 # Existing imports for content generation
 from gemini_chain import generate_ai_content, generate_website_ai_content
 from plagiarism_checker import plagiarism_check
-from utils.image_utils import (
-    load_image_from_bytes,
-    load_image_from_url
-)
-from utils.web_scraper import scrape_website
-from utils.screenshot_utils import get_website_screenshot
 
 # New imports for keyword research
-from routers import keyword_router, serp_router
-from config import settings
+from routers import keyword_router, serp_router, technical_seo_router
+from utils.image_utils import load_image_from_bytes, load_image_from_url
+from utils.screenshot_utils import get_website_screenshot
+from utils.web_scraper import scrape_website
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -30,7 +27,7 @@ app = FastAPI(
     description="Complete SEO toolkit with keyword research, SERP analysis, and AI-powered content generation",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 # CORS middleware
@@ -46,18 +43,20 @@ app.add_middleware(
 # ============= API v1 Routes =============
 
 # Include new keyword research and SERP analysis routers
-app.include_router(keyword_router.router, prefix="/api/v1")
-app.include_router(serp_router.router, prefix="/api/v1")
+app.include_router(keyword_router, prefix="/api/v1")
+app.include_router(serp_router, prefix="/api/v1")
+app.include_router(technical_seo_router, prefix="/api/v1")
 
 
 # ============= Legacy Routes (Backward Compatibility) =============
+
 
 @app.post("/generate-product-content")
 @app.post("/generate-content")
 async def generate_product_content(
     prompt: str = Form(...),
     images: Optional[List[UploadFile]] = File(None),
-    image_urls: Optional[str] = Form(None)  # comma-separated
+    image_urls: Optional[str] = Form(None),  # comma-separated
 ):
     """
     Endpoint for AI product content generation.
@@ -82,8 +81,7 @@ async def generate_product_content(
 
     if not pil_images:
         raise HTTPException(
-            status_code=400,
-            detail="At least one image (file or URL) is required"
+            status_code=400, detail="At least one image (file or URL) is required"
         )
 
     seo_prompt = f"""
@@ -102,32 +100,23 @@ async def generate_product_content(
     {prompt}
     """
 
-    generated_content = generate_ai_content(
-        seo_prompt,
-        pil_images
-    )
+    generated_content = generate_ai_content(seo_prompt, pil_images)
 
-    plagiarism_result = plagiarism_check(
-        text=str(generated_content),
-        references=[]
-    )
+    plagiarism_result = plagiarism_check(text=str(generated_content), references=[])
 
     plagiarism = {
         "is_unique": plagiarism_result["plagiarism_percent"] < 30,
         "plagiarism_score": plagiarism_result["plagiarism_percent"],
         "originality_score": plagiarism_result["originality_percent"],
-        "sources_found": 0
+        "sources_found": 0,
     }
 
-    return {
-        "generated_content": generated_content,
-        "plagiarism": plagiarism
-    }
+    return {"generated_content": generated_content, "plagiarism": plagiarism}
+
 
 @app.post("/generate-website-content")
 async def generate_website_content(
-    url: str = Form(...),
-    prompt: Optional[str] = Form(None)
+    url: str = Form(...), prompt: Optional[str] = Form(None)
 ):
     """
     Generate SEO content by analyzing a website.
@@ -136,40 +125,40 @@ async def generate_website_content(
     # 1. Scrape website data
     scraped_data = scrape_website(url)
     if "error" in scraped_data:
-        raise HTTPException(status_code=400, detail=f"Failed to scrape website: {scraped_data['error']}")
-    
+        raise HTTPException(
+            status_code=400, detail=f"Failed to scrape website: {scraped_data['error']}"
+        )
+
     # 2. Get screenshot
     try:
         screenshot = await get_website_screenshot(url)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to capture screenshot: {str(e)}")
-    
+        raise HTTPException(
+            status_code=500, detail=f"Failed to capture screenshot: {str(e)}"
+        )
+
     # 3. Generate content with AI
     generated_content = generate_website_ai_content(prompt, scraped_data, screenshot)
-    
+
     # 4. Plagiarism check
-    plagiarism_result = plagiarism_check(
-        text=str(generated_content),
-        references=[]
-    )
+    plagiarism_result = plagiarism_check(text=str(generated_content), references=[])
 
     plagiarism = {
         "is_unique": plagiarism_result["plagiarism_percent"] < 30,
         "plagiarism_score": plagiarism_result["plagiarism_percent"],
         "originality_score": plagiarism_result["originality_percent"],
-        "sources_found": 0
+        "sources_found": 0,
     }
 
     return {
         "generated_content": generated_content,
         "plagiarism": plagiarism,
-        "scraped_data": scraped_data
+        "scraped_data": scraped_data,
     }
 
 
-
-
 # ============= Health Check =============
+
 
 @app.get("/")
 async def root():
@@ -181,17 +170,19 @@ async def root():
         "features": {
             "keyword_research": True,
             "serp_analysis": True,
+            "technical_seo_audit": True,
             "content_generation": True,
-            "ai_analysis": True
+            "ai_analysis": True,
         },
         "endpoints": {
             "docs": "/docs",
             "keyword_suggestions": "/api/v1/keywords/suggest",
             "keyword_analysis": "/api/v1/keywords/analyze",
             "serp_analysis": "/api/v1/serp/analyze",
+            "technical_seo_audit": "/api/v1/technical-seo/audit",
             "generate_product_content": "/generate-product-content",
-            "generate_website_content": "/generate-website-content"
-        }
+            "generate_website_content": "/generate-website-content",
+        },
     }
 
 
@@ -203,10 +194,11 @@ async def health_check():
         "gemini_configured": bool(settings.gemini_api_key),
         "google_ads_configured": settings.has_google_ads_credentials(),
         "serp_api_configured": settings.has_serpapi(),
-        "dataforseo_configured": settings.has_dataforseo()
+        "dataforseo_configured": settings.has_dataforseo(),
     }
 
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
