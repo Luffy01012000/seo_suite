@@ -21,7 +21,7 @@ export default function Hero() {
                 </h1>
 
                 <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-                    Unlock enterprise-grade SEO power without the enterprise price tag.
+                    Elevate Rankings. Drive Traffic. Dominate Search. Harness the power of artificial intelligence to revolutionize your SEO strategy.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 const navLinks = [
     { name: 'Features', href: '#features' },
     { name: 'Blogs', href: '/blog' },
-    { name: 'Competitor Analysis', href: '/competitor-analysis' },
     // { name: 'Admin', href: '/admin' },
 ];
 
