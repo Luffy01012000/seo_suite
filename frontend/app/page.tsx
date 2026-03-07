@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Code,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ServiceCardProps {
   icon: React.ReactNode;
@@ -18,6 +19,8 @@ interface ServiceCardProps {
   description: string;
   comingSoon?: boolean;
   href?: string;
+  buttonText?: string;
+  color?: string;
 }
 
 const ServiceCard = ({
@@ -26,80 +29,114 @@ const ServiceCard = ({
   description,
   comingSoon,
   href,
+  buttonText = "Try Now",
+  color = "blue",
 }: ServiceCardProps) => {
-  const content = (
-    <div className="bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-sm shadow-xl transition-all duration-300 hover:border-blue-500/50 hover:shadow-blue-500/20 relative h-full flex flex-col">
-      <div className="text-4xl mb-4 text-blue-500">{icon}</div>
-      <h3 className="text-xl font-semibold mb-3 text-white flex-grow">
+  const colorMap: Record<string, string> = {
+    blue: "text-blue-500 hover:border-blue-500/50 hover:shadow-blue-500/20 shadow-blue-500/10",
+    orange: "text-orange-500 hover:border-orange-500/50 hover:shadow-orange-500/20 shadow-orange-500/10",
+    red: "text-red-500 hover:border-red-500/50 hover:shadow-red-500/20 shadow-red-500/10",
+    green: "text-green-500 hover:border-green-500/50 hover:shadow-green-500/20 shadow-green-500/10",
+    purple: "text-purple-500 hover:border-purple-500/50 hover:shadow-purple-500/20 shadow-purple-500/10",
+  };
+
+  const btnColorMap: Record<string, string> = {
+    blue: "from-blue-600 to-blue-400 group-hover:shadow-blue-500/40",
+    orange: "from-orange-600 to-orange-400 group-hover:shadow-orange-500/40",
+    red: "from-red-600 to-red-400 group-hover:shadow-red-500/40",
+    green: "from-green-600 to-green-400 group-hover:shadow-green-500/40",
+    purple: "from-purple-600 to-purple-400 group-hover:shadow-purple-500/40",
+  };
+
+  return (
+    <div className={cn(
+      "group bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-sm shadow-xl transition-all duration-500 relative h-full flex flex-col",
+      colorMap[color]
+    )}>
+      <div className="text-4xl mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">{icon}</div>
+      <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
         {title}
       </h3>
-      <p className="text-gray-400 mb-6 leading-relaxed">{description}</p>
+      <p className="text-gray-400 mb-8 leading-relaxed text-sm flex-grow">
+        {description}
+      </p>
+      
       {comingSoon ? (
-        <div className="mt-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-500 text-sm font-medium cursor-not-allowed w-fit">
-          <span>Coming Soon</span>
+        <div className="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-gray-500 text-xs font-bold uppercase tracking-wider cursor-not-allowed w-fit">
+          <span>Arriving Soon</span>
         </div>
       ) : (
         <Link
           href={href || "#"}
-          className="mt-auto inline-flex items-center text-blue-400 font-semibold hover:text-blue-300 transition-colors group-hover:translate-x-1 duration-300 w-fit"
+          className={cn(
+            "mt-auto inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r text-white font-bold rounded-xl transition-all duration-300 shadow-lg group-hover:-translate-y-1",
+            btnColorMap[color]
+          )}
         >
-          Try Now <ArrowRight className="w-4 h-4 ml-2" />
+          {buttonText} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       )}
     </div>
   );
-
-  return content;
 };
 
 const services: ServiceCardProps[] = [
   {
     icon: <Search className="w-8 h-8 text-blue-400" />,
-    title: "Smart Keyword Research",
+    title: "Master the Search",
     description:
-      "Uncover high-potential keywords with our intelligent algorithms, identifying opportunities your competitors miss.",
+      "Dominate your niche with AI-driven keyword intelligence. Unearth high-intent opportunities that drive massive organic traffic before the competition even wakes up.",
     href: "/keyword-research",
+    buttonText: "Find Goldmine Keywords",
+    color: "blue",
   },
   {
     icon: <PenTool className="w-8 h-8 text-orange-400" />,
-    title: "Automated Content Generation",
+    title: "Craft Epic Content",
     description:
-      "Generate high-quality, SEO-optimized articles, blog posts, and product descriptions at lightning speed.",
+      "Transform raw ideas into viral-worthy, SEO-optimized masterpieces. Our Next-Gen AI writes content that ranks #1 and captivates humans and algorithms alike.",
     href: "/content-generation",
+    buttonText: "Generate Viral Content",
+    color: "orange",
   },
   {
     icon: <BarChart className="w-8 h-8 text-red-400" />,
-    title: "Performance Analytics",
+    title: "Predictable Growth",
     description:
-      "Track your SEO performance with real-time data and receive actionable insights to continuously improve.",
+      "Stop guessing and start scaling. Get deep performance analytics and automated predictions that show exactly where your next growth spurt is coming from.",
     comingSoon: true,
+    color: "red",
   },
   {
     icon: <LinkIcon className="w-8 h-8 text-green-400" />,
-    title: "Intelligent Link Building",
+    title: "Authority Scaling",
     description:
-      "Identify and acquire high-authority backlinks with AI-driven outreach strategies.",
+      "Automate your link-building hustle. Identify and secure high-authority backlinks with AI-driven outreach that gets replied to every single time.",
     comingSoon: true,
+    color: "green",
   },
   {
     icon: <Code className="w-8 h-8 text-purple-400" />,
-    title: "Technical SEO Audit",
+    title: "Perfect Your Site",
     description:
-      "Analyze any webpage for technical SEO issues. Check title tags, meta descriptions, headings, images, links, and more.",
+      "Audit your technical foundations with surgical precision. Fix hidden leaks in your search visibility and ensure every page is a high-speed SEO powerhouse.",
     href: "/technical-seo",
+    buttonText: "Launch Tech Audit",
+    color: "purple",
   },
   {
-    icon: "🎯",
-    title: "Competitor Analysis",
+    icon: <div className="text-3xl">🎯</div>,
+    title: "Crush Competitors",
     description:
-      "Gain a competitive edge by understanding your rivals' SEO strategies and identifying their weaknesses.",
+      "Infiltrate your rivals' strategies. See their secret keywords, backlink profiles, and content gaps to outmaneuver them at every turn.",
     comingSoon: true,
+    color: "orange",
   },
 ];
 
 export default function Home() {
   return (
-    <main className="bg-black min-h-screen text-white transition-colors duration-300">
+    <main className="bg-black min-h-screen text-white selection:bg-blue-500/30">
       <Navbar />
 
       <Hero />
@@ -107,28 +144,30 @@ export default function Home() {
       {/* Services Section */}
       <section
         id="services"
-        className="py-24 relative overflow-hidden bg-black"
+        className="py-32 relative overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-900/10 to-black pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-black to-black pointer-events-none" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-              Our <span className="text-blue-500">Intelligent Services</span>
+          <div className="text-center mb-24">
+            <h2 className="text-4xl md:text-6xl font-extrabold mb-8 text-white tracking-tight">
+              Dominate with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300">Intelligence</span>
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              Everything you need to dominate the search results, powered by
-              next-generation AI.
+            <p className="text-gray-400 max-w-3xl mx-auto text-xl leading-relaxed font-medium">
+              We've replaced guesswork with AI precision. Deploy specialized tools 
+              designed to scale your organic footprint at exponential speeds.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {services.map((service, index) => (
               <ServiceCard key={index} {...service} />
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Why Choose Us / Features */}
       <section

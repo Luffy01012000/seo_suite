@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 const navLinks = [
     { name: 'Features', href: '#features' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Admin', href: '/admin' },
+    // { name: 'Admin', href: '/admin' },
 ];
 
 import { usePathname } from 'next/navigation';

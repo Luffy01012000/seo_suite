@@ -165,13 +165,48 @@ export default function TechnicalSEOPage() {
     setResults(null);
 
     try {
-      const data = await technicalSEOAPI.quickAudit(auditUrl);
-      // Convert quick audit to full response format for display
-      const fullData = await technicalSEOAPI.auditUrl(auditUrl, {
-        checkBrokenLinks: false,
-        timeoutSeconds: 15,
-      });
-      setResults(fullData);
+      const quickData = await technicalSEOAPI.quickAudit(auditUrl);
+      
+      // Construct a compatible response for the UI from quick audit results
+      // This maps the lightweight QuickAuditResponse to the full TechnicalSEOAuditResponse structure
+      const fullResults: TechnicalSEOAuditResponse = {
+        ...quickData,
+        final_url: quickData.url,
+        page_load_time: {
+          load_time_seconds: quickData.page_load_time_seconds || 0,
+          status: SEOStatus.INFO,
+          recommendations: ['Load time estimation from quick audit'],
+        },
+        // Fill in defaults for missing sections expected by the UI
+        open_graph: { present: false, tags: [], has_og_title: false, has_og_description: false, has_og_image: false, has_og_url: false, has_og_type: false, missing_essential: [], status: SEOStatus.INFO, recommendations: ['Check social tags in a full audit'] },
+        twitter_cards: { present: false, tags: [], has_card: false, has_title: false, has_description: false, has_image: false, status: SEOStatus.INFO, recommendations: ['Check Twitter tags in a full audit'] },
+        images: { 
+          total_images: quickData.alt_tags.total_images, 
+          oversized_images: [], 
+          images_without_dimensions: [], 
+          status: quickData.alt_tags.status, 
+          recommendations: ['Detailed image analysis skipped in Quick Audit'] 
+        },
+        internal_links: { 
+          total_internal_links: 0, 
+          unique_internal_links: 0, 
+          broken_links: [], 
+          status: SEOStatus.INFO, 
+          recommendations: ['Link checking skipped in Quick Audit'] 
+        },
+        structured_data: { present: false, types: [], json_ld_scripts: [], microdata_count: 0, rdfa_count: 0, status: SEOStatus.INFO, recommendations: ['Structured data check skipped'] },
+        security: { is_https: auditUrl.startsWith('https'), mixed_content: false, status: SEOStatus.INFO, recommendations: ['Security scan skipped'] },
+        mobile_friendly: { viewport_meta: false, media_queries_detected: false, status: SEOStatus.INFO, recommendations: ['Mobile check skipped'] },
+        charset: { present: false, status: SEOStatus.INFO },
+        viewport: { present: false, status: SEOStatus.INFO },
+        language: { hreflang_tags: [], status: SEOStatus.INFO, recommendations: [] },
+        url_structure: { url: auditUrl, is_seo_friendly: true, has_underscores: false, has_uppercase: false, has_special_chars: false, issues: [], status: SEOStatus.INFO },
+        warnings: [],
+        passed_checks: 0, 
+        total_checks: 6, // Title, Meta, Headings, Canonical, Robots, Alt Tags
+      };
+      
+      setResults(fullResults);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to perform audit');
     } finally {

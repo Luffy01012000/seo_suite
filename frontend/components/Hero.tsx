@@ -3,7 +3,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 
 export default function Hero() {
     return (
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-16">
+        <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-32 lg:pt-16 pb-12 lg:pb-0">
             {/* Background Gradients - Adjusted for Dark Mode */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[128px] opacity-70" />
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-500/20 rounded-full blur-[128px] opacity-70" />
