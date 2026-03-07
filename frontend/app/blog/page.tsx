@@ -41,7 +41,7 @@ export default async function BlogPage({
     <main className="min-h-screen bg-black px-4 py-10 text-white">
       <div className="mx-auto max-w-5xl space-y-8">
         <div className="space-y-2">
-          <h1 className="text-4xl font-semibold">Blog</h1>
+          <h1 className="text-4xl font-semibold">Blogs</h1>
           <p className="text-slate-300">Published SEO and AI strategy insights.</p>
         </div>
 

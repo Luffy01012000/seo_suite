@@ -10,6 +10,7 @@ import {
   Settings,
   ArrowRight,
   Code,
+  CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -101,10 +102,11 @@ const services: ServiceCardProps[] = [
   },
   {
     icon: <BarChart className="w-8 h-8 text-red-400" />,
-    title: "Predictable Growth",
+    title: "Rank Faster",
     description:
-      "Stop guessing and start scaling. Get deep performance analytics and automated predictions that show exactly where your next growth spurt is coming from.",
-    comingSoon: true,
+      "Analyze your blog posts with our advanced SEO Optimizer. Get instant scores and actionable steps to ensure your content is perfectly tuned for search engines.",
+    href: "/seo-optimizer",
+    buttonText: "Optimize My Article",
     color: "red",
   },
   {
@@ -172,7 +174,7 @@ export default function Home() {
       {/* Why Choose Us / Features */}
       <section
         id="features"
-        className="py-24 bg-white/5 border-y border-white/5 transition-colors"
+        className="py-24 bg-white/5 border-y border-white/10"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -210,6 +212,86 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Architecture Showcase */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-gradient-to-br from-slate-900 to-black border border-white/10 rounded-[3rem] p-12 md:p-20 overflow-hidden relative">
+            {/* Background Accents */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] -mr-48 -mt-48" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-600/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-bold mb-8">
+                  🚀 Technical Architecture
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-8 leading-tight">
+                  Build the Future of <br />
+                  <span className="bg-gradient-to-r from-blue-400 to-orange-400 text-transparent bg-clip-text">SEO SaaS</span>
+                </h2>
+                <p className="text-xl text-gray-400 mb-10 leading-relaxed">
+                  We can show you how to build a complete SEO SaaS architecture using 
+                  <span className="text-white font-semibold"> FastAPI, Next.js, and AI Agents</span>. 
+                  Achieve professional-grade results without paid data sources.
+                </p>
+                
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4 p-6 bg-white/5 border border-white/10 rounded-2xl">
+                    <div className="p-3 bg-blue-500/20 rounded-xl text-blue-400">
+                      <Code className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-bold mb-1">Open Data + AI</h4>
+                      <p className="text-sm text-gray-400">Leverage publicly available search data combined with advanced LLMs to replace expensive APIs.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 p-6 bg-white/5 border border-white/10 rounded-2xl">
+                    <div className="p-3 bg-orange-500/20 rounded-xl text-orange-400">
+                      <Settings className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-bold mb-1">Agentic Orchestration</h4>
+                      <p className="text-sm text-gray-400">Deploy AI agents that autonomously crawl, analyze, and optimize content just like a human SEO expert.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md relative z-10">
+                  <h3 className="text-2xl font-bold text-white mb-8 text-center">Industry Comparison</h3>
+                  <div className="space-y-8">
+                    {[
+                      { name: 'Surfer SEO', status: 'Replaced with Agentic Analysis' },
+                      { name: 'Ahrefs', status: 'Replaced with Open Link Analysis' },
+                      { name: 'SEMrush', status: 'Replaced with AI Competitor Miner' },
+                    ].map((tool, idx) => (
+                      <div key={idx} className="flex items-center justify-between gap-4 p-4 bg-black/40 border border-white/5 rounded-xl transition-all hover:border-blue-500/30 group">
+                        <span className="text-gray-300 font-medium group-hover:text-white transition-colors">{tool.name}</span>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-500" />
+                          <span className="text-xs text-emerald-400/80 font-bold uppercase tracking-wider">{tool.status}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-10 p-6 bg-blue-600/10 border border-blue-500/20 rounded-2xl text-center">
+                    <p className="text-blue-300 text-sm italic">
+                      "Unlock enterprise-grade SEO power without the enterprise price tag."
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute -top-10 -right-10 w-20 h-20 bg-blue-500/20 rounded-full blur-2xl animate-pulse" />
+                <div className="absolute -bottom-10 -left-10 w-20 h-20 bg-orange-500/20 rounded-full blur-2xl animate-pulse delay-700" />
               </div>
             </div>
           </div>

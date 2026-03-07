@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 // In a real application, this would likely be defined elsewhere or passed as props.
 const navLinks = [
     { name: 'Features', href: '#features' },
-    { name: 'Blog', href: '/blog' },
+    { name: 'Blogs', href: '/blog' },
     // { name: 'Admin', href: '/admin' },
 ];
 
