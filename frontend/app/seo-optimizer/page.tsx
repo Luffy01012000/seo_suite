@@ -35,6 +35,7 @@ interface SEOAnalysisResponse {
   seo_score: number;
   metrics: SEOMetrics;
   recommendations: string[];
+  ai_insights: string | null;
 }
 
 export default function SEOOptimizerPage() {

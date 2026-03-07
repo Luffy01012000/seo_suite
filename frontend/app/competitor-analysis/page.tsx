@@ -159,7 +159,7 @@ export default function CompetitorAnalysisPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 text-sm">H1 Tags</span>
-                    <Badge variant={result.metrics.h1_count === 1 ? "default" : "destructive"} className="bg-white/10 text-white border-none">
+                    <Badge variant={result.metrics.h1_count === 1 ? "default" : "outline"} className="bg-white/10 text-white border-none">
                         {result.metrics.h1_count}
                     </Badge>
                   </div>
@@ -169,7 +169,7 @@ export default function CompetitorAnalysisPage() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 text-sm">Images w/o Alt</span>
-                    <Badge variant={result.metrics.images_without_alt === 0 ? "default" : "destructive"} className="bg-white/10 text-white border-none">
+                    <Badge variant={result.metrics.images_without_alt === 0 ? "default" : "outline"} className="bg-white/10 text-white border-none">
                         {result.metrics.images_without_alt}
                     </Badge>
                   </div>
