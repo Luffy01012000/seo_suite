@@ -16,6 +16,7 @@ import {
   Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { API_BASE_URL } from "@/lib/api/keywords";
 
 interface SuggestedLink {
   target_title: string;
@@ -46,7 +47,7 @@ export default function InternalLinkingPage() {
       .filter((t) => t.length > 0);
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/seo/internal-links", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/seo/internal-links`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

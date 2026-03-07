@@ -19,6 +19,7 @@ import {
   ListPlus
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { API_BASE_URL } from "@/lib/api/keywords";
 
 interface SEOMetrics {
   word_count: number;
@@ -61,7 +62,7 @@ export default function SEOOptimizerPage() {
     setResults(null);
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/seo/optimize", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/seo/optimize`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

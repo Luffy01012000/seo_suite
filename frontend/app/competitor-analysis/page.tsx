@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { API_BASE_URL } from "@/lib/api/keywords";
 
 interface CompetitorMetrics {
   word_count: number;
@@ -40,7 +41,7 @@ export default function CompetitorAnalysisPage() {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/competitor", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/competitor`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ keyword, competitor_url: url }),

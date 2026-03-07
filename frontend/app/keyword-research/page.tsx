@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { API_BASE_URL } from "@/lib/api/keywords";
 
 export default function KeywordResearchPage() {
   const [query, setQuery] = useState("");
@@ -23,7 +24,7 @@ export default function KeywordResearchPage() {
     setSuggestions([]);
     
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/keywords/suggest/free?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/keywords/suggest/free?q=${encodeURIComponent(query)}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch keyword suggestions.");

@@ -66,7 +66,7 @@ export default function ContentGenerationPage() {
             let endpoint = '';
 
             if (mode === 'product') {
-                endpoint = `${API_BASE_URL}/generate-product-content`;
+                endpoint = `${API_BASE_URL}/api/v1/generate-product-content`;
                 formData.append('prompt', prompt);
                 if (image) formData.append('images', image);
                 if (imageUrl.trim()) formData.append('image_urls', imageUrl.trim());
@@ -75,7 +75,7 @@ export default function ContentGenerationPage() {
                     throw new Error('Please provide at least one product image.');
                 }
             } else {
-                endpoint = `${API_BASE_URL}/generate-website-content`;
+                endpoint = `${API_BASE_URL}/api/v1/generate-website-content`;
                 formData.append('url', targetUrl);
                 if (prompt) formData.append('prompt', prompt);
 
