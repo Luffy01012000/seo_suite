@@ -37,3 +37,20 @@ class SEOOptimizeResponse(BaseModel):
     recommendations: List[str] = Field(default_factory=list, description="SEO improvement suggestions")
     ai_insights: Optional[str] = Field(None, description="Qualitative AI-powered analysis and content suggestions")
 
+
+class InternalLinkRequest(BaseModel):
+    """Request for internal link suggestions"""
+    article: str = Field(..., description="The article content to analyze")
+    existing_titles: List[str] = Field(..., description="List of existing blog post titles to match against")
+
+
+class SuggestedLink(BaseModel):
+    """A suggested internal link"""
+    target_title: str = Field(..., description="The title of the existing blog post to link to")
+    suggested_anchor_text: str = Field(..., description="The suggested anchor text within the article")
+    reasoning: str = Field(..., description="Brief explanation of why this link is relevant")
+
+
+class InternalLinkResponse(BaseModel):
+    """Internal link suggestions response"""
+    suggestions: List[SuggestedLink] = Field(default_factory=list, description="List of recommended internal links")

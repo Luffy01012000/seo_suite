@@ -14,7 +14,9 @@ import {
   Target,
   Image as ImageIcon,
   Link as LinkIcon,
-  Type
+  Type,
+  Link as LinkIcon2,
+  ListPlus
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +45,9 @@ export default function SEOOptimizerPage() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<SEOAnalysisResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [existingTitles, setExistingTitles] = useState("");
+  const [linksLoading, setLinksLoading] = useState(false);
+  const [linkSuggestions, setLinkSuggestions] = useState<any[] | null>(null);
 
   const handleAnalyze = async () => {
     if (!article || !keyword) {
@@ -78,6 +83,41 @@ export default function SEOOptimizerPage() {
       setError(err.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGenerateLinks = async () => {
+    if (!article || !existingTitles.trim()) {
+      setError("Please provide both the article and at least one existing blog title.");
+      return;
+    }
+
+    setLinksLoading(true);
+    setError(null);
+    setLinkSuggestions(null);
+
+    const titlesArray = existingTitles.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/seo/internal-links", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          article,
+          existing_titles: titlesArray,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate internal links.");
+      }
+
+      const data = await response.json();
+      setLinkSuggestions(data.suggestions);
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setLinksLoading(false);
     }
   };
 
@@ -158,6 +198,19 @@ export default function SEOOptimizerPage() {
                       rows={12}
                       placeholder="Paste your blog post content here..."
                       className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-all text-white placeholder:text-gray-600 resize-none font-mono text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                       <ListPlus className="w-4 h-4 text-emerald-400" /> Existing Blog Titles
+                    </label>
+                    <textarea
+                      value={existingTitles}
+                      onChange={(e) => setExistingTitles(e.target.value)}
+                      rows={4}
+                      placeholder="Paste existing blog titles here (one per line) for Internal Link Suggestions..."
+                      className="w-full bg-black/40 border border-emerald-500/20 rounded-2xl py-4 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-white placeholder:text-gray-600 resize-y text-sm"
                     />
                   </div>
 
@@ -354,6 +407,43 @@ export default function SEOOptimizerPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* AI Internal Link Suggestions */}
+                  <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-sm shadow-xl mt-8 relative overflow-hidden group">
+                     <h3 className="text-lg font-bold text-emerald-400 uppercase tracking-widest mb-6 flex justify-between items-center gap-2">
+                        <span><LinkIcon2 className="w-5 h-5 inline mr-2 text-emerald-500" /> AI Link Building</span>
+                        <button 
+                          onClick={handleGenerateLinks}
+                          disabled={linksLoading || !existingTitles.trim()}
+                          className={cn("text-xs px-4 py-2 rounded-xl transition-all font-bold", linksLoading || !existingTitles.trim() ? "bg-white/5 text-gray-500 cursor-not-allowed" : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30")}
+                        >
+                          {linksLoading ? "Generating..." : "Generate Links"}
+                        </button>
+                     </h3>
+                     
+                     {linkSuggestions ? (
+                       <div className="space-y-4">
+                         {linkSuggestions.length > 0 ? (
+                           linkSuggestions.map((link, idx) => (
+                             <div key={idx} className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
+                               <div className="flex justify-between items-start mb-2">
+                                 <h4 className="text-white font-bold text-sm">Target: {link.target_title}</h4>
+                                 <span className="text-xs px-2 py-1 bg-emerald-500/20 text-emerald-300 rounded-md font-mono">{link.suggested_anchor_text}</span>
+                               </div>
+                               <p className="text-gray-400 text-xs leading-relaxed">{link.reasoning}</p>
+                             </div>
+                           ))
+                         ) : (
+                           <div className="text-center py-6 text-gray-500 text-sm">No relevant semantic links found between this article and your existing titles.</div>
+                         )}
+                       </div>
+                     ) : (
+                       <div className="text-center py-8 border border-dashed border-white/10 rounded-2xl">
+                          <p className="text-gray-500 text-sm">Input your existing blog titles and click generate to find thematic internal linking opportunities.</p>
+                       </div>
+                     )}
+                  </div>
+
                 </>
               )}
 

@@ -114,7 +114,8 @@ const services: ServiceCardProps[] = [
     title: "Authority Scaling",
     description:
       "Automate your link-building hustle. Identify and secure high-authority backlinks with AI-driven outreach that gets replied to every single time.",
-    comingSoon: true,
+    href: "/internal-linking",
+    buttonText: "Optimize Internal Links",
     color: "green",
   },
   {
@@ -131,7 +132,8 @@ const services: ServiceCardProps[] = [
     title: "Crush Competitors",
     description:
       "Infiltrate your rivals' strategies. See their secret keywords, backlink profiles, and content gaps to outmaneuver them at every turn.",
-    comingSoon: true,
+    href: "/competitor-analysis",
+    buttonText: "Analyze Competitors",
     color: "orange",
   },
 ];
@@ -157,7 +159,7 @@ export default function Home() {
               Dominate with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300">Intelligence</span>
             </h2>
             <p className="text-gray-400 max-w-3xl mx-auto text-xl leading-relaxed font-medium">
-              We've replaced guesswork with AI precision. Deploy specialized tools 
+              We&apos;ve replaced guesswork with AI precision. Deploy specialized tools 
               designed to scale your organic footprint at exponential speeds.
             </p>
           </div>
@@ -284,7 +286,7 @@ export default function Home() {
 
                   <div className="mt-10 p-6 bg-blue-600/10 border border-blue-500/20 rounded-2xl text-center">
                     <p className="text-blue-300 text-sm italic">
-                      "Unlock enterprise-grade SEO power without the enterprise price tag."
+                      &quot;Unlock enterprise-grade SEO power and dominate search rankings.&quot;
                     </p>
                   </div>
                 </div>

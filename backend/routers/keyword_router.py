@@ -16,6 +16,7 @@ from schemas.keyword_schemas import (
 from services.orchestrator import get_keyword_orchestrator
 from services.langchain_analysis import get_langchain_analysis_service
 from exceptions import SEOServiceError, APIKeyMissingError, APIRateLimitError
+from services.keyword_research import KeywordResearchService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -260,4 +261,32 @@ async def get_keyword_metrics(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch metrics: {str(e)}"
+        )
+
+@router.get("/suggest/free")
+async def get_free_google_suggestions(q: str):
+    """
+    Get free keyword suggestions directly from Google Autocomplete API.
+    
+    This endpoint does not require any paid API keys.
+    
+    **Example:**
+    ```
+    GET /api/v1/keywords/suggest/free?q=seo+tools
+    ```
+    """
+    if not q or not q.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Query parameter 'q' is required"
+        )
+    
+    try:
+        suggestions = await KeywordResearchService.get_google_suggestions(q.strip())
+        return {"query": q, "suggestions": suggestions}
+    except Exception as e:
+        logger.error(f"Error fetching free keyword suggestions: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch free keyword suggestions: {str(e)}"
         )

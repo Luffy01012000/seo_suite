@@ -10,8 +10,9 @@ from typing import Optional
 from bs4 import BeautifulSoup
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
-from schemas.seo_optimizer_schemas import SEOOptimizeRequest, SEOOptimizeResponse, SEOMetrics
+from schemas.seo_optimizer_schemas import SEOOptimizeRequest, SEOOptimizeResponse, SEOMetrics, InternalLinkRequest, InternalLinkResponse, SuggestedLink
 from config import settings
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -194,6 +195,94 @@ class SEOOptimizerService:
         except Exception as e:
             logger.error(f"Error generating AI insights: {e}")
             return "Failed to generate AI insights. Using standard technical metrics only."
+
+    async def suggest_internal_links(self, request: InternalLinkRequest) -> InternalLinkResponse:
+        """
+        Extract topics from the article and match them to existing blog titles to suggest internal links.
+        Utilizes Gemini for semantic matching and intelligent anchor text generation.
+        """
+        if not settings.gemini_api_key:
+            raise ValueError("Gemini API key not configured. Cannot generate semantic link suggestions.")
+
+        if not request.existing_titles:
+            return InternalLinkResponse(suggestions=[])
+
+        try:
+            llm = ChatGoogleGenerativeAI(
+                api_key=settings.gemini_api_key,
+                model=settings.gemini_model,
+                temperature=0.2
+            )
+            
+            # Format the titles as a bulleted list string
+            titles_str = "\n".join([f"- {title}" for title in request.existing_titles])
+            
+            # Truncate article to fit in context window comfortably
+            truncated_article = request.article[:5000]
+
+            prompt = f"""
+            You are an expert SEO Link Building Agent.
+            Your task is to analyze an article and suggest highly relevant internal links from a provided list of existing blog titles.
+            
+            Existing Blog Titles:
+            {titles_str}
+            
+            Article Content (Snippet):
+            {truncated_article}
+            
+            Instructions:
+            1. Identify 2 to 5 highly relevant topical connections between the article content and the existing blog titles.
+            2. Suggest natural, contextually relevant anchor text that ideally exists (or could easily be placed) within the article.
+            3. Explain briefly why the link is a strong semantic match.
+            4. Only suggest a link if there is a strong thematic connection.
+            
+            You MUST return ONLY a valid JSON array of objects. Do not include markdown formatting like ```json.
+            Example format:
+            [
+              {{
+                "target_title": "Existing Title 1",
+                "suggested_anchor_text": "understanding SEO basics",
+                "reasoning": "The article discusses basics, making this a perfect semantic bridge."
+              }}
+            ]
+            """
+
+            message = HumanMessage(content=prompt)
+            import asyncio
+            loop = asyncio.get_event_loop()
+            response = await loop.run_in_executor(None, lambda: llm.invoke([message]))
+            
+            # Parse the JSON response
+            content = response.content.strip()
+            # Clean up markdown code blocks if the LLM hallucinated them despite instructions
+            content = re.sub(r'^```json\s*', '', content)
+            content = re.sub(r'^```\s*', '', content)
+            content = re.sub(r'\s*```$', '', content)
+            
+            suggestions_data = json.loads(content)
+            
+            # Parse into Pydantic models
+            suggestions = []
+            for item in suggestions_data:
+                # Ensure the suggested title actually exists to prevent hallucinations
+                matched_title = item.get("target_title", "")
+                if any(matched_title.lower() == t.lower() for t in request.existing_titles):
+                    suggestions.append(
+                        SuggestedLink(
+                            target_title=matched_title,
+                            suggested_anchor_text=item.get("suggested_anchor_text", ""),
+                            reasoning=item.get("reasoning", "")
+                        )
+                    )
+                    
+            return InternalLinkResponse(suggestions=suggestions)
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini JSON response for internal links: {e}")
+            return InternalLinkResponse(suggestions=[])
+        except Exception as e:
+            logger.error(f"Error suggesting internal links: {e}")
+            raise
 
 
 

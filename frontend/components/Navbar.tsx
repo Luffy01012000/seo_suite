@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 const navLinks = [
     { name: 'Features', href: '#features' },
     { name: 'Blogs', href: '/blog' },
+    { name: 'Competitor Analysis', href: '/competitor-analysis' },
     // { name: 'Admin', href: '/admin' },
 ];
 
@@ -54,7 +55,7 @@ export function Navbar() {
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className="text-gray-300 hover:text-white px-1 py-2 text-sm font-medium transition-colors hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                                    className="rounded text-gray-300 hover:text-white px-1 py-2 text-sm font-medium transition-colors  hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                                 >
                                     {link.name}
                                 </Link>

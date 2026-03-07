@@ -21,7 +21,7 @@ export default function Hero() {
                 </h1>
 
                 <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-                    Elevate Rankings. Drive Traffic. Dominate Search. Harness the power of artificial intelligence to revolutionize your SEO strategy.
+                    Unlock enterprise-grade SEO power without the enterprise price tag.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -43,7 +43,7 @@ export default function Hero() {
                 </div>
 
                 {/* Stats / Social Proof (Optional Mockup) */}
-                <div className="mt-20 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-8">
+                {/* <div className="mt-20 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-8">
                     {[
                         { label: 'Content Generated', value: '1M+' },
                         { label: 'SEO Success Rate', value: '98%' },
@@ -55,7 +55,7 @@ export default function Hero() {
                             <div className="text-sm text-gray-400">{stat.label}</div>
                         </div>
                     ))}
-                </div>
+                </div> */}
             </div>
         </div>
     );
