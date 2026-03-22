@@ -10,7 +10,7 @@ from gemini_chain import generate_ai_content, generate_website_ai_content
 from plagiarism_checker import plagiarism_check
 
 # New imports for keyword research
-from routers import keyword_router, serp_router, technical_seo_router, seo_optimizer_router, competitor_router
+from routers import keyword_router, serp_router, technical_seo_router, seo_optimizer_router, competitor_router, backlink_router
 from utils.image_utils import load_image_from_bytes, load_image_from_url
 from utils.screenshot_utils import get_website_screenshot
 from utils.web_scraper import scrape_website
@@ -48,6 +48,7 @@ app.include_router(serp_router, prefix="/api/v1")
 app.include_router(technical_seo_router, prefix="/api/v1")
 app.include_router(seo_optimizer_router, prefix="/api/v1")
 app.include_router(competitor_router, prefix="/api/v1")
+app.include_router(backlink_router, prefix="/api/v1")
 
 
 # ============= Legacy Routes (Backward Compatibility) =============

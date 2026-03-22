@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Code,
   CheckCircle,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -101,21 +102,21 @@ const services: ServiceCardProps[] = [
     color: "orange",
   },
   {
-    icon: <BarChart className="w-8 h-8 text-red-400" />,
-    title: "Rank Faster",
+    icon: <Globe className="w-8 h-8 text-blue-400" />,
+    title: "Backlink Analytics",
     description:
-      "Analyze your blog posts with our advanced SEO Optimizer. Get instant scores and actionable steps to ensure your content is perfectly tuned for search engines.",
-    href: "/seo-optimizer",
-    buttonText: "Optimize My Article",
-    color: "red",
+      "Uncover the link profile of any domain. Identify high-authority opportunities and monitor your competitive landscape with AI-driven link intelligence.",
+    href: "/backlinks",
+    buttonText: "Analyze Backlinks",
+    color: "blue",
   },
   {
     icon: <LinkIcon className="w-8 h-8 text-green-400" />,
     title: "Authority Scaling",
     description:
-      "Automate your link-building hustle. Identify and secure high-authority backlinks with AI-driven outreach that gets replied to every single time.",
+      "Dominate your niche by building a bulletproof internal link architecture. Our AI architect bridges your content semantically to boost topical authority.",
     href: "/internal-linking",
-    buttonText: "Optimize Internal Links",
+    buttonText: "Scale Authority",
     color: "green",
   },
   {

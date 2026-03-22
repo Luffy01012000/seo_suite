@@ -16,7 +16,7 @@ import {
   Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { API_BASE_URL } from "@/lib/api/keywords";
+import { keywordAPI } from "@/lib/api/keywords";
 
 interface SuggestedLink {
   target_title: string;
@@ -47,7 +47,7 @@ export default function InternalLinkingPage() {
       .filter((t) => t.length > 0);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/seo/internal-links`, {
+      const response = await fetch(`${keywordAPI.baseUrl}/api/v1/seo/internal-links`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -62,8 +62,8 @@ export default function InternalLinkingPage() {
 
       const data = await response.json();
       setSuggestions(data.suggestions);
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }

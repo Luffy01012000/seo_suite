@@ -94,13 +94,71 @@ export interface SERPAnalysisResponse {
     insights?: any;
 }
 
+export interface BacklinkItem {
+    url_from: string;
+    url_to: string;
+    title?: string;
+    anchor?: string;
+    rank?: number;
+    is_dofollow: boolean;
+    first_seen?: string;
+    last_seen?: string;
+    is_broken: boolean;
+}
+
+export interface BacklinkSummary {
+    total_backlinks: number;
+    referring_domains: number;
+    referring_main_domains: number;
+    referring_ips: number;
+    referring_subnets: number;
+    dofollow_percent: number;
+    rank: number;
+}
+
+export interface BacklinkAnalysisResponse {
+    target: string;
+    summary: BacklinkSummary;
+    backlinks: BacklinkItem[];
+    cached: boolean;
+    data_source: string;
+}
+
 // ============= API Client =============
 
 class KeywordAPIClient {
-    private baseUrl: string;
+    public baseUrl: string;
 
     constructor(baseUrl: string = API_BASE_URL) {
         this.baseUrl = baseUrl;
+    }
+
+    /**
+     * Analyze backlinks for a domain or URL
+     */
+    async analyzeBacklinks(
+        target: string,
+        mode: 'domain' | 'subdomain' | 'url' = 'domain',
+        limit: number = 100
+    ): Promise<BacklinkAnalysisResponse> {
+        const response = await fetch(`${this.baseUrl}/api/v1/backlinks/analyze`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                target,
+                mode,
+                limit,
+            }),
+        });
+
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+            throw new Error(error.detail || `HTTP ${response.status}`);
+        }
+
+        return response.json();
     }
 
     /**

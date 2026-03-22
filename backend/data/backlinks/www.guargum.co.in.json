@@ -1,0 +1,264 @@
+{
+    "data": {
+        "domain": "www.guargum.co.in",
+        "display_date": "2026-03-01",
+        "backlinks_overview": {
+            "total": 512,
+            "ascore": 9,
+            "domains_num": 101,
+            "dofollow_percent": 66.8
+        },
+        "backlinks_list": [
+            {
+                "link": "https://hu.wikipedia.org/wiki/Guargumi",
+                "anchor": "Abdullabhai Abdul Kader",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "Guargumi – Wikipédia",
+                "page_score": 47,
+                "target_link": "http://www.guargum.co.in/guargum.html"
+            },
+            {
+                "link": "https://mllingy.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "mllingy",
+                "page_score": 29,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingu.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "mllingu",
+                "page_score": 28,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://luhuij.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "luhuij",
+                "page_score": 27,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingoo.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "mllingo",
+                "page_score": 27,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingp.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "mllingp",
+                "page_score": 27,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://menyebabkankerugiana.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "menyebabkankerugian",
+                "page_score": 26,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://menyebabkankerugiand.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "menyebabkankerugiand",
+                "page_score": 26,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://in.pinterest.com/abdullabhaiabdulkaderahmedabad/",
+                "anchor": "guargum.co.in ; Opens a new tab",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": false,
+                "link_title": "Abdullabhai Abdul Kader (Ahmedabad) (abdullabhaiabdulkaderahmedabad) - Profile | Pinterest",
+                "page_score": 24,
+                "target_link": "http://guargum.co.in/"
+            },
+            {
+                "link": "https://menyebabkankerugianas.blogspot.com/",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "menyebabkankerugianas",
+                "page_score": 23,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://luhuij.blogspot.com/component/dashboardmm/?view=manager",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "ERROR 404 - luhuij",
+                "page_score": 12,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingoo.blogspot.com/component/dashboardmm/?view=manager",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "ERROR 404 - mllingo",
+                "page_score": 12,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingu.blogspot.com/manage/manage-sidebar.html",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "ERROR 404 - mllingu",
+                "page_score": 12,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingy.blogspot.com/component/dashboard/?view=manager",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "ERROR 404 - mllingy",
+                "page_score": 12,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingoo.blogspot.com/component/dashboard/?view=manager",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "ERROR 404 - mllingo",
+                "page_score": 11,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://mllingy.blogspot.com/component/newsmgr/?view=intro",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "ERROR 404 - mllingy",
+                "page_score": 11,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "http://indiacatalog.com/yellow_pages/yp_detail.php?id=107655",
+                "anchor": "",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": false,
+                "link_title": "Abdullahbahi Abdul Kader, Ahmedabad in Animal Feed. Abdullahbahi Abdul Kader Yellow Pages: Car Dealers, Banks, Hotels, Restaurants, Travel Agents, Hospitals, Real Estate Agents and more listings.",
+                "page_score": 8,
+                "target_link": "http://www.guargum.co.in/"
+            },
+            {
+                "link": "https://ensun.io/use-case/guar-gum-powder-various-industries-key-uses-6889c809307566268a0655dc",
+                "anchor": "View use case on website",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "Guar Gum Powder – Various Industries Key Uses - Use case | ensun",
+                "page_score": 8,
+                "target_link": "https://www.guargum.co.in/application"
+            },
+            {
+                "link": "https://www.freelistingindia.in/listings/abdullabhai-abdul-kader-2",
+                "anchor": "www.guargum.co.in/",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "Abdullabhai Abdul Kader (Ahmedabad) | FreeListingIndia",
+                "page_score": 6,
+                "target_link": "http://www.guargum.co.in/"
+            },
+            {
+                "link": "http://odp.org/Business/Textiles_and_Nonwovens/Dyestuffs_and_Chemicals/Chemicals/Guar_Gum",
+                "anchor": "Abdullabhai Abdul Kader",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": false,
+                "link_title": "Guar Gum Web Directory: ODP.org > Business > Textiles and Nonwovens > Dyestuffs and Chemicals > Chemicals > Guar Gum Directory",
+                "page_score": 5,
+                "target_link": "http://www.guargum.co.in/"
+            },
+            {
+                "link": "http://www.odp.org/Business/Textiles_and_Nonwovens/Dyestuffs_and_Chemicals/Chemicals/Guar_Gum",
+                "anchor": "Abdullabhai Abdul Kader",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": false,
+                "link_title": "Guar Gum Web Directory: ODP.org > Business > Textiles and Nonwovens > Dyestuffs and Chemicals > Chemicals > Guar Gum Directory",
+                "page_score": 5,
+                "target_link": "http://www.guargum.co.in/"
+            },
+            {
+                "link": "https://tuffclassified.com/abdullabhai-abdul-kader-ahmedabad-leading-manufacturer-of-guar-gum-powder_2335188",
+                "anchor": "https://www.guargum.co.in/",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "Free Classifieds Ads In India Buy/Sell/Rent - Tuffclassified",
+                "page_score": 5,
+                "target_link": "https://www.guargum.co.in/"
+            },
+            {
+                "link": "https://tuffclassified.com/leading-exporter-of-nigella-sativa-seeds-and-oil-abdullabhai-abdul-kader-ahmedabad_2335180",
+                "anchor": "https://www.guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": true,
+                "link_title": "Free Classifieds Ads In India Buy/Sell/Rent - Tuffclassified",
+                "page_score": 5,
+                "target_link": "https://www.guargum.co.in/"
+            },
+            {
+                "link": "https://www.jayde.com/chemicals/import-and-export.html/?ds=80",
+                "anchor": "guargum.co.in",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": false,
+                "link_title": "Import And Export, page 17 Directory » Jayde",
+                "page_score": 5,
+                "target_link": "https://guargum.co.in/"
+            },
+            {
+                "link": "https://www.jayde.com/chemicals/import-and-export.html/?ds=80",
+                "anchor": "Guar Gum - Guar Gum Powder Manufacturer Exporter India",
+                "newlink": false,
+                "lostlink": false,
+                "nofollow": false,
+                "link_title": "Import And Export, page 17 Directory » Jayde",
+                "page_score": 5,
+                "target_link": "https://guargum.co.in/"
+            }
+        ]
+    }
+}

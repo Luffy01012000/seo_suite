@@ -1,0 +1,32 @@
+{
+    "overview": {
+        "organic_keywords": 123,
+        "organic_traffic": 45,
+        "organic_cost": 0.0,
+        "paid_keywords": 0,
+        "rank": 51
+    },
+    "historical_data": [
+        {"month": "Mar 2023", "organic": 40, "paid": 0},
+        {"month": "May 2023", "organic": 90, "paid": 0},
+        {"month": "Jul 2023", "organic": 140, "paid": 0},
+        {"month": "Sep 2023", "organic": 150, "paid": 0},
+        {"month": "Nov 2023", "organic": 132, "paid": 0},
+        {"month": "Jan 2024", "organic": 70, "paid": 0},
+        {"month": "Mar 2024", "organic": 45, "paid": 0}
+    ],
+    "top_keywords": [
+        {"keyword": "guar gum", "rank": 51, "traffic_est": 18, "search_volume": 1500},
+        {"keyword": "guar gum powder", "rank": 20, "traffic_est": 9, "search_volume": 2400},
+        {"keyword": "guar gum manufacturers", "rank": 64, "traffic_est": 3, "search_volume": 800},
+        {"keyword": "black seed oil for hair", "rank": 25, "traffic_est": 2, "search_volume": 1200},
+        {"keyword": "guar gum powder uses", "rank": 37, "traffic_est": 1, "search_volume": 500}
+    ],
+    "top_competitors": [
+        {"domain": "ambagums.com", "shared_keywords": 45, "relevance": 0.85, "organic_traffic_est": 1200},
+        {"domain": "supremegums.com", "shared_keywords": 38, "relevance": 0.72, "organic_traffic_est": 950},
+        {"domain": "agrogums.com", "shared_keywords": 32, "relevance": 0.65, "organic_traffic_est": 800},
+        {"domain": "naturments.com", "shared_keywords": 28, "relevance": 0.58, "organic_traffic_est": 600},
+        {"domain": "everythingblackseed.com", "shared_keywords": 15, "relevance": 0.45, "organic_traffic_est": 300}
+    ]
+}

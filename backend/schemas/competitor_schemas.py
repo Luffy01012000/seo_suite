@@ -1,5 +1,5 @@
 from pydantic import BaseModel, HttpUrl
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 
 class CompetitorRequest(BaseModel):
     keyword: str
@@ -20,3 +20,38 @@ class CompetitorResponse(BaseModel):
     keyword: str
     metrics: CompetitorMetrics
     insights: List[str]
+
+# --- Domain Overview & Competitor Intelligence Hub ---
+
+class DomainOverview(BaseModel):
+    domain: str
+    organic_keywords: int = 0
+    organic_traffic: int = 0
+    organic_cost: float = 0.0
+    paid_keywords: int = 0
+    paid_traffic: int = 0
+    paid_cost: float = 0.0
+    rank: int = 0
+    historical_data: List[Dict[str, Any]] = []
+
+class RankedKeyword(BaseModel):
+    keyword: str
+    rank: int
+    search_volume: int = 0
+    cpc: float = 0.0
+    traffic_est: int = 0
+    url: Optional[str] = None
+
+class DomainCompetitor(BaseModel):
+    domain: str
+    shared_keywords: int = 0
+    common_keywords_count: int = 0
+    relevance: float = 0.0
+    organic_traffic_est: int = 0
+
+class DomainIntelligenceResponse(BaseModel):
+    target: str
+    overview: DomainOverview
+    top_keywords: List[RankedKeyword] = []
+    top_competitors: List[DomainCompetitor] = []
+    data_source: str = "dataforseo"

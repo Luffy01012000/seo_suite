@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import { CheckCircle, X, Menu } from 'lucide-react';
+import { X, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 // Placeholder for navLinks array to make the code syntactically correct
@@ -12,6 +12,7 @@ const navLinks = [
 ];
 
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -42,10 +43,11 @@ export function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-1.5 rounded-lg shadow-lg shadow-blue-500/20">
-                            <CheckCircle className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="font-bold text-xl text-white tracking-tight">SEO-AI Strategy</span>
+                        {/* <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-1.5 rounded-lg shadow-lg shadow-blue-500/20"> */}
+                        <Image src={"/logo1-removebg-preview.png"} alt="logo" className='rounded' width={150} height={500} />
+                        {/* <CheckCircle className="w-5 h-5 text-white" /> */}
+                        {/* </div> */}
+                        {/* <span className="font-bold text-xl text-white tracking-tight">SEO-AI Strategy</span> */}
                     </Link>
 
                     <div className="hidden md:flex items-center space-x-6">
