@@ -37,7 +37,7 @@ interface CompetitorResponse {
 }
 
 interface DomainOverview {
-  domain: str;
+  domain: string;
   organic_keywords: number;
   organic_traffic: number;
   organic_cost: number;
@@ -389,7 +389,7 @@ export default function CompetitorAnalysisPage() {
                                     <td className="px-6 py-4 text-xs font-mono text-gray-400">{kw.search_volume.toLocaleString()}</td>
                                     <td className="px-6 py-4 text-xs font-bold text-white">{kw.traffic_est}</td>
                                     <td className="px-6 py-4">
-                                        <Button size="sm" variant="ghost" className="h-8 px-3 text-[10px] font-bold text-indigo-400 hover:bg-indigo-500/10">DETAILS</Button>
+                                        <Button variant="ghost" className="h-8 px-3 text-[10px] font-bold text-indigo-400 hover:bg-indigo-500/10">DETAILS</Button>
                                     </td>
                                 </tr>
                             ))}
