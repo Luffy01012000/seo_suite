@@ -54,7 +54,7 @@ app.include_router(backlink_router, prefix="/api/v1")
 # ============= Legacy Routes (Backward Compatibility) =============
 
 
-@app.post("/generate-product-content")
+@app.post("/api/v1/generate-product-content")
 @app.post("/generate-content")
 async def generate_product_content(
     prompt: str = Form(...),
@@ -117,7 +117,7 @@ async def generate_product_content(
     return {"generated_content": generated_content, "plagiarism": plagiarism}
 
 
-@app.post("/generate-website-content")
+@app.post("/api/v1/generate-website-content")
 async def generate_website_content(
     url: str = Form(...), prompt: Optional[str] = Form(None)
 ):
