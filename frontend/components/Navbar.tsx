@@ -44,7 +44,7 @@ export function Navbar() {
                 <div className="flex items-center justify-between h-16">
                     <Link href="/" className="flex items-center gap-2">
                         {/* <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-1.5 rounded-lg shadow-lg shadow-blue-500/20"> */}
-                        <Image src={"/logo1-removebg-preview.png"} alt="logo" className='rounded' width={150} height={500} />
+                        <Image src={"/logo1-removebg-preview.png"} unoptimized={true} alt="logo" className='rounded' width={150} height={500} />
                         {/* <CheckCircle className="w-5 h-5 text-white" /> */}
                         {/* </div> */}
                         {/* <span className="font-bold text-xl text-white tracking-tight">SEO-AI Strategy</span> */}
