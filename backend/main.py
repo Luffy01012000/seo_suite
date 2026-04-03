@@ -215,7 +215,7 @@ async def debug():
             ]
         )
         page = await browser.new_page()
-        await page.goto("https://example.com")
+        await page.goto("https://vercel.com")
         title = await page.title()
         await browser.close()
         return {"title": title}
