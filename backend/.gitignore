@@ -1,3 +1,4 @@
 seoAi/
 node_modules/
 .env
+.venv

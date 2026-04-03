@@ -201,6 +201,24 @@ async def health_check():
         "dataforseo_configured": settings.has_dataforseo(),
     }
 
+@app.get("/debug")
+async def debug():
+    from playwright.async_api import async_playwright
+    
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage"
+            ]
+        )
+        page = await browser.new_page()
+        await page.goto("https://example.com")
+        title = await page.title()
+        await browser.close()
+        return {"title": title}
 
 if __name__ == "__main__":
     import uvicorn
