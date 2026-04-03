@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright/python:v1.50.0-noble
+FROM mcr.microsoft.com/playwright/python:v1.49.1-noble
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN pip install uv
 COPY . .
 
 # Install dependencies
-RUN uv sync
+RUN uv sync --active && uv run playwright install chromium --with-deps
 
 # Expose port (Render uses 10000 internally)
 EXPOSE 10000
