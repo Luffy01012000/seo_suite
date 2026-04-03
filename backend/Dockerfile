@@ -1,15 +1,18 @@
-FROM mcr.microsoft.com/playwright/python:1.49.1
+FROM mcr.microsoft.com/playwright/python:v1.50.0-noble
 
 WORKDIR /app
 
 # Install uv
 RUN pip install uv
 
-# Copy project
+# Copy files
 COPY . .
 
 # Install dependencies
-RUN uv sync --active
+RUN uv sync
 
-# Run app
+# Expose port (Render uses 10000 internally)
+EXPOSE 10000
+
+# Start app
 CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"]
